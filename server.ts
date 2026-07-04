@@ -85,8 +85,9 @@ app.get("/api/health", (req, res) => {
 
       // Establish Server-Sent Events headers
       res.setHeader("Content-Type", "text/event-stream");
-      res.setHeader("Cache-Control", "no-cache");
+      res.setHeader("Cache-Control", "no-cache, no-transform");
       res.setHeader("Connection", "keep-alive");
+      res.setHeader("X-Accel-Buffering", "no");
 
       let stream;
       try {

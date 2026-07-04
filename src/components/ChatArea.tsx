@@ -250,13 +250,32 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
 
       let assistantContent = '';
       let isStreaming = true;
+      let buffer = '';
 
       while (isStreaming) {
         const { value, done } = await reader.read();
-        if (done) break;
+        if (done) {
+          if (buffer.trim()) {
+            const lines = buffer.split('\n');
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = line.slice(6).trim();
+                if (data === '[DONE]') break;
+                try {
+                  const parsed = JSON.parse(data);
+                  if (parsed.text) {
+                    assistantContent += parsed.text;
+                  }
+                } catch (e) {}
+              }
+            }
+          }
+          break;
+        }
 
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n');
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
 
         for (const line of lines) {
           if (line.startsWith('data: ')) {
