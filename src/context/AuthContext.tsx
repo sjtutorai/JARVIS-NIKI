@@ -125,6 +125,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(true);
     try {
       await signInWithPopup(auth, googleProvider);
+      sessionStorage.setItem('justSignedInWithGoogle', 'true');
     } catch (error) {
       console.error("Google Sign-In Error", error);
       throw error;

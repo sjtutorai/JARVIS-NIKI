@@ -47,6 +47,11 @@ function MainAppContent() {
   // Load conversations on mount or user change
   useEffect(() => {
     if (user) {
+      if (sessionStorage.getItem('justSignedInWithGoogle') === 'true') {
+        setActiveTab('dashboard');
+        sessionStorage.removeItem('justSignedInWithGoogle');
+      }
+
       dbService.getConversations(user.uid).then(convos => {
         setConversations(convos);
         if (convos.length > 0) {
