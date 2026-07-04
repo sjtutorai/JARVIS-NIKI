@@ -6,7 +6,10 @@ import {
   User, 
   signInAnonymously,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  sendSignInLinkToEmail,
+  isSignInWithEmailLink,
+  signInWithEmailLink
 } from 'firebase/auth';
 import { auth, googleProvider } from '../firebase';
 import { UserProfile, UserAnalytics } from '../types';
@@ -19,6 +22,7 @@ interface AuthContextType {
   loginWithGoogle: () => Promise<void>;
   loginAnonymously: () => Promise<void>;
   loginWithEmail: (email: string, pass: string, isSignUp: boolean, displayName?: string) => Promise<void>;
+  sendPasswordlessLink: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   updateProfile: (profile: Partial<UserProfile>) => Promise<void>;
 }
@@ -44,6 +48,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
 
   useEffect(() => {
+    // Check if user clicked a sign-in email link
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+      let email = window.localStorage.getItem('emailForSignIn');
+      if (!email) {
+        email = window.prompt('Please provide your email for confirmation:');
+      }
+      if (email) {
+        setLoading(true);
+        signInWithEmailLink(auth, email, window.location.href)
+          .then(() => {
+            window.localStorage.removeItem('emailForSignIn');
+            // Remove parameters from URL
+            window.history.replaceState({}, document.title, window.location.origin);
+          })
+          .catch((error) => {
+            console.error("Error signing in with email link", error);
+            alert("Verification failed: " + (error.message || "Failed to authenticate with magic link."));
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      }
+    }
+
     // Listen for Firebase Auth changes
     const unsubscribe = onAuthStateChanged(auth, async (fUser) => {
       setFirebaseUser(fUser);
@@ -162,6 +190,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const sendPasswordlessLink = async (email: string) => {
+    setLoading(true);
+    try {
+      const actionCodeSettings = {
+        url: window.location.origin,
+        handleCodeInApp: true,
+      };
+      await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+      window.localStorage.setItem('emailForSignIn', email);
+    } catch (error) {
+      console.error("Error sending passwordless link:", error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const logout = async () => {
     setLoading(true);
     try {
@@ -195,6 +240,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       loginWithGoogle, 
       loginAnonymously,
       loginWithEmail,
+      sendPasswordlessLink,
       logout,
       updateProfile
     }}>
