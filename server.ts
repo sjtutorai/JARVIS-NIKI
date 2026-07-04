@@ -30,11 +30,8 @@ app.get("/api/health", (req, res) => {
 
       const ai = new GoogleGenAI({ apiKey });
 
-      // Determine model mapping
-      let geminiModel = "gemini-2.5-flash";
-      if (model === "advanced") {
-        geminiModel = "gemini-2.5-pro";
-      }
+      // Determine model mapping - Use the stable, high-performance gemini-3.5-flash by default
+      let geminiModel = "gemini-3.5-flash";
 
       // Convert messages to Gemini SDK 'contents' format
       const contents = messages.map((msg: any) => {
@@ -91,14 +88,28 @@ app.get("/api/health", (req, res) => {
       res.setHeader("Cache-Control", "no-cache");
       res.setHeader("Connection", "keep-alive");
 
-      const stream = await ai.models.generateContentStream({
-        model: geminiModel,
-        contents,
-        config: {
-          systemInstruction,
-          temperature: model === "fast" ? 0.95 : model === "advanced" ? 0.4 : 0.7,
-        }
-      });
+      let stream;
+      try {
+        stream = await ai.models.generateContentStream({
+          model: geminiModel,
+          contents,
+          config: {
+            systemInstruction,
+            temperature: model === "fast" ? 0.95 : model === "advanced" ? 0.4 : 0.7,
+          }
+        });
+      } catch (streamError: any) {
+        console.warn(`Initial stream attempt for ${geminiModel} failed:`, streamError.message || streamError);
+        console.log("Retrying with stable gemini-3.5-flash fallback...");
+        stream = await ai.models.generateContentStream({
+          model: "gemini-3.5-flash",
+          contents,
+          config: {
+            systemInstruction,
+            temperature: model === "fast" ? 0.95 : model === "advanced" ? 0.4 : 0.7,
+          }
+        });
+      }
 
       for await (const chunk of stream) {
         if (chunk.text) {

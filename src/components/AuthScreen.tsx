@@ -2,26 +2,22 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useForm } from 'react-hook-form';
 import { motion, AnimatePresence } from 'motion/react';
-import { Bot, LogIn, Mail, Lock, User, Sparkles, AlertCircle } from 'lucide-react';
+import { LogIn, Mail, Sparkles, AlertCircle } from 'lucide-react';
 
 export interface AuthScreenProps {
   onBack?: () => void;
 }
 
 export const AuthScreen: React.FC<AuthScreenProps> = ({ onBack }) => {
-  const { loginWithGoogle, loginAnonymously, loginWithEmail, sendPasswordlessLink } = useAuth();
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [isPasswordless, setIsPasswordless] = useState(false);
+  const { loginWithGoogle, loginAnonymously, sendPasswordlessLink } = useAuth();
   const [linkSent, setLinkSent] = useState(false);
   const [sentEmail, setSentEmail] = useState('');
   const [authError, setAuthError] = useState<string | null>(null);
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      name: '',
       email: '',
-      password: '',
     }
   });
 
@@ -29,13 +25,9 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onBack }) => {
     setAuthError(null);
     setLoadingAction('email');
     try {
-      if (isPasswordless) {
-        await sendPasswordlessLink(data.email);
-        setSentEmail(data.email);
-        setLinkSent(true);
-      } else {
-        await loginWithEmail(data.email, data.password, isSignUp, data.name);
-      }
+      await sendPasswordlessLink(data.email);
+      setSentEmail(data.email);
+      setLinkSent(true);
     } catch (err: any) {
       setAuthError(err.message || 'Authentication failed. Please verify credentials.');
     } finally {
@@ -92,7 +84,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onBack }) => {
             JARVIS AI
           </h2>
           <p className="text-xs text-gray-500 mt-2 uppercase tracking-[0.15em] font-medium">
-            {isSignUp ? 'Establish Assistant Connection' : 'Initialize Authentication'}
+            Initialize Authentication
           </p>
         </div>
 
@@ -110,41 +102,6 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onBack }) => {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Tab Selector */}
-        {!linkSent && (
-          <div className="flex bg-white/5 p-1 rounded-2xl mb-6 border border-white/5">
-            <button
-              type="button"
-              onClick={() => {
-                setIsPasswordless(false);
-                setAuthError(null);
-              }}
-              className={`flex-1 py-2 text-xs font-semibold rounded-[10px] transition-all cursor-pointer ${
-                !isPasswordless 
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/10' 
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              Password Login
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setIsPasswordless(true);
-                setIsSignUp(false);
-                setAuthError(null);
-              }}
-              className={`flex-1 py-2 text-xs font-semibold rounded-[10px] transition-all cursor-pointer ${
-                isPasswordless 
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/10' 
-                  : 'text-gray-400 hover:text-white'
-              }`}
-            >
-              Passwordless (Magic Link)
-            </button>
-          </div>
-        )}
 
         {linkSent ? (
           <div className="text-center py-6 space-y-4">
@@ -171,29 +128,6 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onBack }) => {
           </div>
         ) : (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <AnimatePresence initial={false}>
-              {isSignUp && !isPasswordless && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0, y: -10 }}
-                  animate={{ height: 'auto', opacity: 1, y: 0 }}
-                  exit={{ height: 0, opacity: 0, y: -10 }}
-                  className="overflow-hidden"
-                >
-                  <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase tracking-wider">Your Name</label>
-                  <div className="relative">
-                    <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input
-                      type="text"
-                      {...register('name', { required: (isSignUp && !isPasswordless) ? 'Name is required' : false })}
-                      placeholder="Tony Stark"
-                      className="w-full bg-white/5 border border-white/10 rounded-[15px] py-3.5 pl-11 pr-4 text-sm text-slate-200 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors"
-                    />
-                  </div>
-                  {errors.name && <p className="text-[11px] text-red-400 mt-1">{errors.name.message}</p>}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
             <div>
               <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase tracking-wider">Email Address</label>
               <div className="relative">
@@ -211,25 +145,6 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onBack }) => {
               {errors.email && <p className="text-[11px] text-red-400 mt-1">{errors.email.message}</p>}
             </div>
 
-            {!isPasswordless && (
-              <div>
-                <label className="block text-xs font-semibold text-gray-400 mb-1.5 uppercase tracking-wider">Secure Password</label>
-                <div className="relative">
-                  <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="password"
-                    {...register('password', { 
-                      required: !isPasswordless ? 'Password is required' : false,
-                      minLength: !isPasswordless ? { value: 6, message: 'Password must be at least 6 characters' } : undefined
-                    })}
-                    placeholder="••••••••••••"
-                    className="w-full bg-white/5 border border-white/10 rounded-[15px] py-3.5 pl-11 pr-4 text-sm text-slate-200 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors"
-                  />
-                </div>
-                {errors.password && <p className="text-[11px] text-red-400 mt-1">{errors.password.message}</p>}
-              </div>
-            )}
-
             {/* Submit Button */}
             <button
               type="submit"
@@ -241,7 +156,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onBack }) => {
               ) : (
                 <>
                   <LogIn size={16} />
-                  <span>{isPasswordless ? 'Send Magic Link' : isSignUp ? 'Create Jarvis Account' : 'Authenticate Console'}</span>
+                  <span>Send Magic Link</span>
                 </>
               )}
             </button>
@@ -308,22 +223,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onBack }) => {
           </button>
         </div>
 
-        {/* Toggle Mode */}
-        {!isPasswordless && (
-          <p className="text-center text-xs text-gray-500 mt-8">
-            {isSignUp ? 'Already have an account?' : 'New operator to Jarvis?'}
-            <button
-              onClick={() => {
-                setIsSignUp(!isSignUp);
-                setAuthError(null);
-                reset();
-              }}
-              className="text-blue-500 hover:text-blue-400 ml-1.5 font-bold transition-colors focus:outline-none cursor-pointer"
-            >
-              {isSignUp ? 'De-authorize & Sign In' : 'Establish Profile / Sign Up'}
-            </button>
-          </p>
-        )}
+
 
         {onBack && (
           <div className="text-center mt-6 pt-4 border-t border-white/5">

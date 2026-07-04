@@ -211,7 +211,7 @@ function MainAppContent() {
               <span className="text-xs font-medium text-gray-300">
                 {model === 'fast' && 'Fast AI 3.5'}
                 {model === 'balanced' && 'Balanced AI 3.5'}
-                {model === 'advanced' && 'Advanced AI 1.5'}
+                {model === 'advanced' && 'Advanced AI 3.5'}
               </span>
             </div>
             <span className="text-gray-600 hidden sm:inline">/</span>
