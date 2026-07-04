@@ -3,13 +3,12 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB8aa8oLRtyLJGS6_-lFWs6cqZOejORjTE",
-  authDomain: "abiding-composition-k9ffs.firebaseapp.com",
-  projectId: "abiding-composition-k9ffs",
-  storageBucket: "abiding-composition-k9ffs.firebasestorage.app",
-  messagingSenderId: "526552560400",
-  appId: "1:526552560400:web:07f64eb68efe9c055ceb95",
-  firestoreDatabaseId: "ai-studio-e43fb21c-1714-4233-83b0-31a7f3fa29a8"
+  apiKey: "AIzaSyBQo4612j_N2gi_2kAJp6kIEPKe9ew3kMM",
+  authDomain: "jarvis-nikki.firebaseapp.com",
+  projectId: "jarvis-nikki",
+  storageBucket: "jarvis-nikki.firebasestorage.app",
+  messagingSenderId: "98302776876",
+  appId: "1:98302776876:web:d4331f9a8ba35accd22389"
 };
 
 // Initialize Firebase
@@ -17,7 +16,9 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase services
 export const auth = getAuth(app);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+export const db = (firebaseConfig as any).firestoreDatabaseId 
+  ? getFirestore(app, (firebaseConfig as any).firestoreDatabaseId)
+  : getFirestore(app);
 export const googleProvider = new GoogleAuthProvider();
 
 export { signInWithPopup, signOut };
