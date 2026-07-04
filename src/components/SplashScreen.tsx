@@ -42,7 +42,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           
           <div className="flex items-center justify-center w-18 h-18 rounded-full bg-white/5 p-1.5 shadow-[0_0_20px_rgba(37,99,235,0.25)]">
             <img 
-              src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+              src="https://i.ibb.co/pjJvWvG0/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
               alt="Jarvis Logo" 
               className="w-full h-full object-contain rounded-full"
               referrerPolicy="no-referrer"

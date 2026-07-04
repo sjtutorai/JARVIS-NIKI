@@ -107,7 +107,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Sidebar Header */}
       <div className="p-6 flex items-center gap-3">
         <img 
-          src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+          src="https://i.ibb.co/pjJvWvG0/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
           alt="Jarvis Logo" 
           className="w-8 h-8 rounded-[10px] object-contain shadow-[0_0_15px_rgba(37,99,235,0.25)]"
           referrerPolicy="no-referrer"

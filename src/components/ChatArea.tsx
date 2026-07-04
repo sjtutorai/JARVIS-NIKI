@@ -395,7 +395,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                 {msg.role === 'assistant' && (
                   <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 p-0.5 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(37,99,235,0.2)]">
                     <img 
-                      src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+                      src="https://i.ibb.co/pjJvWvG0/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
                       alt="Jarvis Logo" 
                       className="w-full h-full object-contain rounded-full"
                       referrerPolicy="no-referrer"
@@ -508,7 +508,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
               >
                 <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 p-0.5 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(37,99,235,0.2)]">
                   <img 
-                    src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+                    src="https://i.ibb.co/pjJvWvG0/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
                     alt="Jarvis Logo" 
                     className="w-full h-full object-contain rounded-full"
                     referrerPolicy="no-referrer"
@@ -656,7 +656,7 @@ const EmptyState: React.FC<EmptyStateProps> = ({ onSuggestionClick }) => {
     <div className="max-w-2xl mx-auto flex flex-col items-center justify-center h-full text-center">
       <div className="w-20 h-20 rounded-full bg-white/5 border border-white/10 p-1 flex items-center justify-center mb-6">
         <img 
-          src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+          src="https://i.ibb.co/pjJvWvG0/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
           alt="Jarvis Logo" 
           className="w-full h-full object-contain rounded-full"
           referrerPolicy="no-referrer"

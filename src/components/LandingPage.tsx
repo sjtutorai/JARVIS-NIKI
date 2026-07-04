@@ -469,18 +469,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           {/* Left: Animated Jarvis Logo */}
           <div className="flex items-center gap-3">
-            <motion.div 
+            <div 
               className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 p-0.5 border border-white/10 shadow-[0_0_15px_rgba(37,99,235,0.2)]"
-              animate={{ rotate: 360 }}
-              transition={{ repeat: Infinity, duration: 25, ease: 'linear' }}
             >
               <img 
-                src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+                src="https://i.ibb.co/pjJvWvG0/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
                 alt="Jarvis Logo" 
                 className="w-full h-full object-contain rounded-full"
                 referrerPolicy="no-referrer"
               />
-            </motion.div>
+            </div>
             <span className="text-xl font-bold tracking-tight uppercase">JARVIS AI</span>
           </div>
 
@@ -1162,7 +1160,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
           
           <div className="w-16 h-16 bg-white/5 border border-white/10 p-1.5 rounded-full flex items-center justify-center shadow-2xl shadow-blue-500/25 mb-8 animate-bounce">
             <img 
-              src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+              src="https://i.ibb.co/pjJvWvG0/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
               alt="Jarvis Logo" 
               className="w-full h-full object-contain rounded-full"
               referrerPolicy="no-referrer"
@@ -1201,7 +1199,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
             <div className="flex items-center gap-2.5">
               <div className="w-7 h-7 rounded-full bg-white/5 p-0.5 border border-white/10 flex items-center justify-center">
                 <img 
-                  src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+                  src="https://i.ibb.co/pjJvWvG0/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
                   alt="Jarvis Logo" 
                   className="w-full h-full object-contain rounded-full"
                   referrerPolicy="no-referrer"

@@ -82,7 +82,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onBack }) => {
         <div className="flex flex-col items-center mb-10 text-center">
           <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/5 p-1 border border-white/10 shadow-[0_0_20px_rgba(37,99,235,0.25)] mb-4">
             <img 
-              src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+              src="https://i.ibb.co/pjJvWvG0/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
               alt="Jarvis Logo" 
               className="w-full h-full object-contain rounded-full"
               referrerPolicy="no-referrer"
