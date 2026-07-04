@@ -106,9 +106,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <div className="w-80 h-full flex flex-col bg-[#0F0F12] border-r border-white/5 text-slate-300 relative">
       {/* Sidebar Header */}
       <div className="p-6 flex items-center gap-3">
-        <div className="w-8 h-8 rounded-[10px] bg-gradient-to-br from-blue-600 via-cyan-400 to-indigo-600 flex items-center justify-center shadow-[0_0_15px_rgba(37,99,235,0.4)]">
-          <div className="w-4 h-4 bg-white rounded-full"></div>
-        </div>
+        <img 
+          src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+          alt="Jarvis Logo" 
+          className="w-8 h-8 rounded-[10px] object-contain shadow-[0_0_15px_rgba(37,99,235,0.25)]"
+          referrerPolicy="no-referrer"
+        />
         <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">JARVIS</span>
       </div>
 

@@ -3,6 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import { dbService } from '../services/db';
 import { Message, AIModelType, FileAttachment } from '../types';
 import { motion, AnimatePresence } from 'motion/react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { 
   Send, Bot, Sparkles, Mic, MicOff, Volume2, VolumeX, Copy, Check, RefreshCw, 
   Paperclip, Image, FileText, CheckCircle, Flame, Shield, Play, Square, AlertCircle, X, ThumbsUp, ThumbsDown, Share2
@@ -391,8 +393,13 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
               >
                 {/* Assistant Avatar */}
                 {msg.role === 'assistant' && (
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-cyan-400 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(37,99,235,0.4)]">
-                    <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse" />
+                  <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 p-0.5 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(37,99,235,0.2)]">
+                    <img 
+                      src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+                      alt="Jarvis Logo" 
+                      className="w-full h-full object-contain rounded-full"
+                      referrerPolicy="no-referrer"
+                    />
                   </div>
                 )}
 
@@ -486,7 +493,7 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                 {/* User Avatar */}
                 {msg.role === 'user' && (
                   <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/10 text-xs font-bold text-gray-300">
-                    {user?.displayName ? user.displayName.slice(0, 2).toUpperCase() : user?.email ? user.email.slice(0, 2).toUpperCase() : 'JD'}
+                    {user?.name ? user.name.slice(0, 2).toUpperCase() : user?.email ? user.email.slice(0, 2).toUpperCase() : 'JD'}
                   </div>
                 )}
               </motion.div>
@@ -499,8 +506,13 @@ export const ChatArea: React.FC<ChatAreaProps> = ({
                 animate={{ opacity: 1 }}
                 className="flex gap-4 justify-start items-start"
               >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-cyan-400 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(37,99,235,0.4)]">
-                  <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse" />
+                <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 p-0.5 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(37,99,235,0.2)]">
+                  <img 
+                    src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+                    alt="Jarvis Logo" 
+                    className="w-full h-full object-contain rounded-full"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
                 <div className="flex flex-col items-start max-w-[80%]">
                   <div className="flex items-center gap-2 mb-1 px-1 text-[10px] font-mono tracking-widest text-slate-500 uppercase">
@@ -642,8 +654,13 @@ const EmptyState: React.FC<EmptyStateProps> = ({ onSuggestionClick }) => {
 
   return (
     <div className="max-w-2xl mx-auto flex flex-col items-center justify-center h-full text-center">
-      <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-6">
-        <Bot size={32} className="text-blue-500 animate-pulse" />
+      <div className="w-20 h-20 rounded-full bg-white/5 border border-white/10 p-1 flex items-center justify-center mb-6">
+        <img 
+          src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+          alt="Jarvis Logo" 
+          className="w-full h-full object-contain rounded-full"
+          referrerPolicy="no-referrer"
+        />
       </div>
       <h3 className="text-2xl font-bold text-white tracking-tight">I am Jarvis</h3>
       <p className="text-xs text-gray-500 tracking-wider font-mono mt-2 uppercase">Stark Cybernetic Console v1.0.4</p>
@@ -665,38 +682,6 @@ const EmptyState: React.FC<EmptyStateProps> = ({ onSuggestionClick }) => {
         ))}
       </div>
     </div>
-  );
-};
-
-/* Custom Markdown Content text rendering engine */
-const MessageContent: React.FC<{ text: string }> = ({ text }) => {
-  if (!text) return null;
-
-  // Split text by markdown block code ```
-  const parts = text.split(/(```[\s\S]*?```)/g);
-
-  return (
-    <>
-      {parts.map((part, index) => {
-        if (part.startsWith('```')) {
-          // It is a code block
-          const match = part.match(/```(\w*)\n([\s\S]*?)```/);
-          const lang = match ? match[1] : 'code';
-          const code = match ? match[2] : part.slice(3, -3);
-
-          return (
-            <CodeBlock key={index} language={lang} code={code} />
-          );
-        } else {
-          // Standard text with inline markdown
-          return (
-            <p key={index} className="whitespace-pre-wrap text-slate-300">
-              <InlineMarkdown text={part} />
-            </p>
-          );
-        }
-      })}
-    </>
   );
 };
 
@@ -741,74 +726,85 @@ const CodeBlock: React.FC<{ language: string; code: string }> = ({ language, cod
   );
 };
 
-/* Custom simple inline markdown parser (Bold, italic, inline code) */
-const InlineMarkdown: React.FC<{ text: string }> = ({ text }) => {
+/* Custom Markdown Content text rendering engine with full support for tables, lists, blockquotes, etc. */
+const MessageContent: React.FC<{ text: string }> = ({ text }) => {
   if (!text) return null;
 
-  // Render headers
-  if (text.startsWith('### ')) {
-    return <h4 className="text-sm font-extrabold text-white uppercase tracking-wider mt-4 mb-2">{text.slice(4)}</h4>;
-  }
-  if (text.startsWith('## ')) {
-    return <h3 className="text-md font-black text-white tracking-wide mt-5 mb-2.5">{text.slice(3)}</h3>;
-  }
-  if (text.startsWith('# ')) {
-    return <h2 className="text-lg font-black text-white tracking-widest uppercase mt-6 mb-3 text-glow">{text.slice(2)}</h2>;
-  }
-
-  // Parse list bullets like "* text" or "- text"
-  if (text.trim().startsWith('* ') || text.trim().startsWith('- ')) {
-    const listContent = text.replace(/^\s*[-*]\s+/gm, '');
-    return (
-      <li className="list-disc pl-2 ml-4 text-slate-300 mt-1">
-        <InlineMarkdown text={listContent} />
-      </li>
-    );
-  }
-
-  // Parse numbered list like "1. text"
-  const numMatch = text.match(/^\s*(\d+)\.\s+(.*)/);
-  if (numMatch) {
-    return (
-      <li className="list-decimal pl-2 ml-4 text-slate-300 mt-1">
-        <InlineMarkdown text={numMatch[2]} />
-      </li>
-    );
-  }
-
-  // Inline bold/code parses
-  // Replace `code` with <code className="bg-slate-900 border border-slate-800 text-cyan-400 px-1 py-0.2 rounded font-mono text-xs">
-  // Replace **bold** with <strong className="font-extrabold text-white">
-  // Replace *italic* with <em className="italic text-slate-300">
-  const boldCodeRegex = /(`[^`]+`|\*\*[^*]+\*\*|\*[^*]+\*)/g;
-  const parts = text.split(boldCodeRegex);
-
   return (
-    <>
-      {parts.map((part, i) => {
-        if (part.startsWith('`') && part.endsWith('`')) {
-          return (
-            <code key={i} className="bg-slate-900/80 border border-slate-800 text-cyan-400 px-1.5 py-0.5 rounded font-mono text-xs">
-              {part.slice(1, -1)}
-            </code>
-          );
-        }
-        if (part.startsWith('**') && part.endsWith('**')) {
-          return (
-            <strong key={i} className="font-extrabold text-white">
-              {part.slice(2, -2)}
-            </strong>
-          );
-        }
-        if (part.startsWith('*') && part.endsWith('*')) {
-          return (
-            <em key={i} className="italic text-slate-200">
-              {part.slice(1, -1)}
-            </em>
-          );
-        }
-        return <span key={i}>{part}</span>;
-      })}
-    </>
+    <div className="markdown-body text-slate-200 space-y-3">
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          // Customize headers
+          h1: ({ children }) => <h2 className="text-lg font-extrabold text-white uppercase tracking-wider mt-5 mb-2.5">{children}</h2>,
+          h2: ({ children }) => <h3 className="text-base font-bold text-white uppercase tracking-wide mt-4 mb-2">{children}</h3>,
+          h3: ({ children }) => <h4 className="text-sm font-bold text-white tracking-wider mt-3.5 mb-1.5">{children}</h4>,
+          h4: ({ children }) => <h5 className="text-xs font-bold text-white tracking-widest uppercase mt-3 mb-1">{children}</h5>,
+          
+          // Customize paragraphs and lists
+          p: ({ children }) => <p className="leading-relaxed text-slate-300 my-1 whitespace-pre-wrap">{children}</p>,
+          ul: ({ children }) => <ul className="list-disc pl-5 my-2.5 space-y-1">{children}</ul>,
+          ol: ({ children }) => <ol className="list-decimal pl-5 my-2.5 space-y-1">{children}</ol>,
+          li: ({ children }) => <li className="text-slate-300 my-0.5">{children}</li>,
+          
+          // Customize quotes
+          blockquote: ({ children }) => (
+            <blockquote className="border-l-4 border-blue-500 pl-4 my-2.5 italic text-slate-400 bg-white/5 py-1.5 pr-2 rounded-r-lg">
+              {children}
+            </blockquote>
+          ),
+          
+          // Customize links
+          a: ({ href, children }) => (
+            <a 
+              href={href} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-cyan-400 hover:text-cyan-300 underline font-medium transition-colors"
+            >
+              {children}
+            </a>
+          ),
+          
+          // Customize tables (Render beautiful markdown tables with responsive styling)
+          table: ({ children }) => (
+            <div className="my-4 overflow-x-auto rounded-xl border border-white/10 bg-white/[0.02] shadow-2xl">
+              <table className="min-w-full divide-y divide-white/10 text-left border-collapse">
+                {children}
+              </table>
+            </div>
+          ),
+          thead: ({ children }) => <thead className="bg-white/5">{children}</thead>,
+          tbody: ({ children }) => <tbody className="divide-y divide-white/5">{children}</tbody>,
+          tr: ({ children }) => <tr className="hover:bg-white/[0.01] transition-colors">{children}</tr>,
+          th: ({ children }) => <th className="px-4 py-2.5 text-xs font-bold text-slate-300 uppercase tracking-wider border-b border-white/10">{children}</th>,
+          td: ({ children }) => <td className="px-4 py-2.5 text-sm text-slate-300 align-middle border-b border-white/[0.02]">{children}</td>,
+          
+          // Customize code (both inline and code block)
+          code({ className, children, ...props }) {
+            const match = /language-(\w+)/.exec(className || '');
+            const inline = !match;
+            const codeString = String(children).replace(/\n$/, '');
+
+            if (inline) {
+              return (
+                <code className="bg-slate-900/80 border border-slate-800 text-cyan-400 px-1.5 py-0.5 rounded font-mono text-xs" {...props}>
+                  {children}
+                </code>
+              );
+            }
+
+            return (
+              <CodeBlock 
+                language={match ? match[1] : 'code'} 
+                code={codeString} 
+              />
+            );
+          }
+        }}
+      >
+        {text}
+      </ReactMarkdown>
+    </div>
   );
 };

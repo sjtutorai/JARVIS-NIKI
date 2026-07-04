@@ -71,8 +71,13 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onBack }) => {
       >
         {/* Header Logo */}
         <div className="flex flex-col items-center mb-10 text-center">
-          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)] mb-4">
-            <div className="w-3.5 h-3.5 bg-white rounded-full animate-pulse" />
+          <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/5 p-1 border border-white/10 shadow-[0_0_20px_rgba(37,99,235,0.25)] mb-4">
+            <img 
+              src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+              alt="Jarvis Logo" 
+              className="w-full h-full object-contain rounded-full"
+              referrerPolicy="no-referrer"
+            />
           </div>
           <h2 className="text-2xl font-bold text-white tracking-tight uppercase">
             JARVIS AI

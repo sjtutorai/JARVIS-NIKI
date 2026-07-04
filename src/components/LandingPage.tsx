@@ -470,11 +470,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
           {/* Left: Animated Jarvis Logo */}
           <div className="flex items-center gap-3">
             <motion.div 
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.4)]"
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 p-0.5 border border-white/10 shadow-[0_0_15px_rgba(37,99,235,0.2)]"
               animate={{ rotate: 360 }}
-              transition={{ repeat: Infinity, duration: 15, ease: 'linear' }}
+              transition={{ repeat: Infinity, duration: 25, ease: 'linear' }}
             >
-              <div className="w-3 h-3 bg-white rounded-full animate-pulse" />
+              <img 
+                src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+                alt="Jarvis Logo" 
+                className="w-full h-full object-contain rounded-full"
+                referrerPolicy="no-referrer"
+              />
             </motion.div>
             <span className="text-xl font-bold tracking-tight uppercase">JARVIS AI</span>
           </div>
@@ -1155,8 +1160,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
         <div className="bg-gradient-to-tr from-blue-600/10 via-purple-600/5 to-cyan-500/10 p-12 md:p-20 rounded-[30px] border border-white/5 relative overflow-hidden flex flex-col items-center">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_40%,rgba(37,99,235,0.08)_0%,transparent_50%)] pointer-events-none" />
           
-          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-2xl shadow-blue-500/30 mb-8 animate-bounce">
-            <Bot size={32} className="text-white" />
+          <div className="w-16 h-16 bg-white/5 border border-white/10 p-1.5 rounded-full flex items-center justify-center shadow-2xl shadow-blue-500/25 mb-8 animate-bounce">
+            <img 
+              src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+              alt="Jarvis Logo" 
+              className="w-full h-full object-contain rounded-full"
+              referrerPolicy="no-referrer"
+            />
           </div>
 
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">Start Chatting with Jarvis Today</h2>
@@ -1189,8 +1199,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onSignIn, onGetStarted
           {/* Brand Col */}
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center">
-                <div className="w-1.5 h-1.5 bg-white rounded-full" />
+              <div className="w-7 h-7 rounded-full bg-white/5 p-0.5 border border-white/10 flex items-center justify-center">
+                <img 
+                  src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+                  alt="Jarvis Logo" 
+                  className="w-full h-full object-contain rounded-full"
+                  referrerPolicy="no-referrer"
+                />
               </div>
               <span className="text-base font-bold text-white tracking-wider">JARVIS AI</span>
             </div>

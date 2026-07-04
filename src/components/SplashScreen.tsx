@@ -40,8 +40,13 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
           <div className="absolute inset-0 rounded-full border border-dashed border-white/10 animate-spin" style={{ animationDuration: '25s' }} />
           <div className="absolute inset-2 rounded-full border border-double border-white/5 animate-reverse-spin" style={{ animation: 'spin 15s linear infinite reverse' }} />
           
-          <div className="flex items-center justify-center w-14 h-14 rounded-full bg-blue-600 shadow-[0_0_20px_rgba(37,99,235,0.4)]">
-            <div className="w-3.5 h-3.5 bg-white rounded-full animate-pulse" />
+          <div className="flex items-center justify-center w-18 h-18 rounded-full bg-white/5 p-1.5 shadow-[0_0_20px_rgba(37,99,235,0.25)]">
+            <img 
+              src="https://i.ibb.co/hFDRXRh7/Chat-GPT-Image-Jul-4-2026-01-41-13-PM.png" 
+              alt="Jarvis Logo" 
+              className="w-full h-full object-contain rounded-full"
+              referrerPolicy="no-referrer"
+            />
           </div>
         </motion.div>
 
